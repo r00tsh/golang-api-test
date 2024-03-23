@@ -39,7 +39,7 @@ jobs:
 #         with:
 #           repository: rootsh/taskfiles
 #           path: taskfiles
-#           ref: v0.0.13
+#           ref: v0.0.14
 #           ssh-key: ${{ secrets.PRIVATE_KEY_TASKFILES_DEPLOY }}
 #       - name: Set up Docker Buildx
 #         uses: docker/setup-buildx-action@v3
@@ -77,7 +77,7 @@ jobs:
         with:
           repository: rootsh/taskfiles
           path: taskfiles
-          ref: v0.0.13
+          ref: v0.0.14
           ssh-key: ${{ secrets.PRIVATE_KEY_TASKFILES_DEPLOY }}
       - name: Clone gitops repository
         uses: actions/checkout@v4
@@ -126,7 +126,7 @@ jobs:
         with:
           repository: rootsh/taskfiles
           path: taskfiles
-          ref: v0.0.13
+          ref: v0.0.14
           ssh-key: ${{ secrets.PRIVATE_KEY_TASKFILES_DEPLOY }}
       - name: Deploy PRD
         env:
