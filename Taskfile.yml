@@ -1,0 +1,7 @@
+version: '3'
+
+includes:
+  hadolint:
+    taskfile: ./taskfiles/lint/hadolint.yml
+  build:
+    taskfile: ./taskfiles/build/build_push.yml
