@@ -86,10 +86,10 @@ jobs:
           path: gitops
           fetch-depth: 0
           ssh-key: ${{ secrets.PRIVATE_KEY_GITOPS_DEPLOY }}
-      - name: Download version.txt
-        uses: actions/download-artifact@v4
-        with:
-          name: version
+    #   - name: Download version.txt
+    #     uses: actions/download-artifact@v4
+    #     with:
+    #       name: version
       - name: Pull request for GitOps
         env:
           PIPELINE_ID: ${{ github.run_number }}-${{ github.sha }}
