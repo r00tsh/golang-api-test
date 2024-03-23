@@ -58,7 +58,7 @@ jobs:
           path: version.txt
           retention-days: 90
   deploy:
-    runs-on: ubuntu-latest
+    runs-on: [self-hosted, linux, ARM64, runner_k8s_arm64]
     permissions: write-all
     environment: 'prd'
     needs: build_push
@@ -98,7 +98,7 @@ jobs:
           PIPELINE_ID: ${{ github.run_number }}-${{ github.sha }}
           DIRECTORY_APPS: k8s/main/applications
         run: |
-          task deploy:pr
+          task deploy:pr --dry
       - name: Deploy PRD
         env:
           ARGOCD_CONFIG_NAME: ${{ secrets.ARGOCD_CONFIG_MAIN }}
