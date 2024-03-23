@@ -8,7 +8,7 @@ jobs:
     runs-on: ubuntu-latest
     permissions: write-all
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
       - name: Bump version and push tag
         id: tag_version
         uses: mathieudutour/github-tag-action@v6.2
@@ -58,7 +58,7 @@ jobs:
           path: version.txt
           retention-days: 90
   deploy:
-    runs-on: runner_k8s_arm64
+    runs-on: self-hosted
     environment: 'prd'
     needs: build_push
     steps:
