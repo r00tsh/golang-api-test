@@ -39,7 +39,7 @@ jobs:
         with:
           repository: rootsh/taskfiles
           path: taskfiles
-          ref: v0.0.8
+          ref: v0.0.9
           ssh-key: ${{ secrets.PRIVATE_KEY_TASKFILES_DEPLOY }}
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v3
@@ -60,7 +60,6 @@ jobs:
   deploy:
     runs-on: ubuntu-latest
     permissions: write-all
-    environment: 'prd'
     needs: build_push
     steps:
       - uses: actions/checkout@v4
@@ -71,8 +70,6 @@ jobs:
         with:
           version: 3.x
           repo-token: ${{ secrets.GITHUB_TOKEN }}
-      - name: Install ArgoCD CLI
-        uses: imajeetyadav/argocd-cli@v1
       - name: Install yq
         uses: mikefarah/yq@master
       - name: Clone taskfiles repository
@@ -80,7 +77,7 @@ jobs:
         with:
           repository: rootsh/taskfiles
           path: taskfiles
-          ref: v0.0.8
+          ref: v0.0.9
           ssh-key: ${{ secrets.PRIVATE_KEY_TASKFILES_DEPLOY }}
       - name: Clone gitops repository
         uses: actions/checkout@v4
@@ -98,9 +95,29 @@ jobs:
           PIPELINE_ID: ${{ github.run_number }}-${{ github.sha }}
           DIRECTORY_APPS: gitops/k8s/main/applications
         run: |
-          ls -l
-          ls -l gitops
-          task deploy:pr --dry
+          task deploy:pr
+  argocd_sync:
+    runs-on: self-hosted
+    needs: deploy
+    environment: 'prd'
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Install Task
+        uses: arduino/setup-task@v2
+        with:
+          version: 3.x
+          repo-token: ${{ secrets.GITHUB_TOKEN }}
+      - name: Install ArgoCD CLI
+        uses: imajeetyadav/argocd-cli@v1
+      - name: Clone taskfiles repository
+        uses: actions/checkout@v4
+        with:
+          repository: rootsh/taskfiles
+          path: taskfiles
+          ref: v0.0.9
+          ssh-key: ${{ secrets.PRIVATE_KEY_TASKFILES_DEPLOY }}
       - name: Deploy PRD
         env:
           ARGOCD_CONFIG_NAME: ${{ secrets.ARGOCD_CONFIG_MAIN }}
