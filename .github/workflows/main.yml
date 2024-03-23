@@ -58,7 +58,7 @@ jobs:
           path: version.txt
           retention-days: 90
   deploy:
-    runs-on: self-hosted
+    runs-on: ubuntu-latest
     permissions: write-all
     environment: 'prd'
     needs: build_push
