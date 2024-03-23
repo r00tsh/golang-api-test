@@ -58,7 +58,7 @@ jobs:
           path: version.txt
           retention-days: 90
   deploy:
-    runs-on: actions_runner_ativa
+    runs-on: runner_k8s_arm64
     environment: 'prd'
     needs: build_push
     steps:
