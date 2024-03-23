@@ -5,3 +5,7 @@ includes:
     taskfile: ./taskfiles/lint/hadolint.yml
   build:
     taskfile: ./taskfiles/build/build_push.yml
+  deploy:
+    taskfile: ./taskfiles/deploy/gitops.yml
+  argocd:
+    taskfile: ./taskfiles/deploy/argocd.yml

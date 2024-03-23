@@ -39,7 +39,7 @@ jobs:
         with:
           repository: rootsh/taskfiles
           path: taskfiles
-          ref: v0.0.5
+          ref: v0.0.7
           ssh-key: ${{ secrets.PRIVATE_KEY_TASKFILES_DEPLOY }}
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v3
@@ -57,3 +57,50 @@ jobs:
           name: version
           path: version.txt
           retention-days: 90
+  deploy:
+    runs-on: actions_runner_ativa
+    environment: 'prd'
+    needs: build_push
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Install Task
+        uses: arduino/setup-task@v1
+        with:
+          version: 3.x
+          repo-token: ${{ secrets.GITHUB_TOKEN }}
+      - name: Install ArgoCD CLI
+        uses: imajeetyadav/argocd-cli@v1
+      - name: Install yq
+        uses: mikefarah/yq@master
+      - name: Clone taskfiles repository
+        uses: actions/checkout@v4
+        with:
+          repository: rootsh/taskfiles
+          path: taskfiles
+          ref: v0.0.7
+          ssh-key: ${{ secrets.PRIVATE_KEY_TASKFILES_DEPLOY }}
+      - name: Clone gitops repository
+        uses: actions/checkout@v4
+        with:
+          repository: rootsh/gitops
+          path: gitops
+          fetch-depth: 0
+          ssh-key: ${{ secrets.PRIVATE_KEY_GITOPS_DEPLOY }}
+      - name: Download version.txt
+        uses: actions/download-artifact@v4
+        with:
+          name: version
+      - name: Pull request for GitOps
+        env:
+          PIPELINE_ID: ${{ github.run_number }}-${{ github.sha }}
+          DIRECTORY_APPS: k8s/main/applications
+        run: |
+          task deploy:pr
+      - name: Deploy PRD
+        env:
+          ARGOCD_CONFIG_NAME: ${{ secrets.ARGOCD_CONFIG_MAIN }}
+        run: |
+          task argocd:config
+          task argocd:deploy
