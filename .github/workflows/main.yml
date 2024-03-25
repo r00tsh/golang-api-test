@@ -61,8 +61,6 @@ jobs:
       - name: Scan vulnerability for container image
         run: |
           task trivy:image
-        env:
-          SEVERITY: CRITICAL  
       - name: Upload Trivy scan results to GitHub Security tab
         uses: github/codeql-action/upload-sarif@v3
         with:
@@ -111,7 +109,7 @@ jobs:
             echo "TAG=$(cat version.txt)" >> $GITHUB_ENV
       - name: Set env REPO_NAME to repository name
         run: |
-          echo "REPO_NAME=$(basename $(git remote get-url origin) | cut -f1 -d'.')" >> $GITHUB_ENV
+          echo "GIT_REPO_NAME=$(basename $(git remote get-url origin) | cut -f1 -d'.')" >> $GITHUB_ENV
       - name: Pull request for GitOps
         env:
           PIPELINE_ID: ${{ github.run_number }}-${{ github.sha }}
