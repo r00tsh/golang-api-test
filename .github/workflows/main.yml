@@ -22,6 +22,8 @@ jobs:
           body: ${{ steps.tag_version.outputs.changelog }}
   build_push:
     runs-on: ubuntu-latest
+    permissions:
+      security-events: write
     needs: release
     steps:
       - uses: actions/checkout@v4
