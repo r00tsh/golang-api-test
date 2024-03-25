@@ -22,7 +22,7 @@ jobs:
         with:
           repository: rootsh/taskfiles
           path: taskfiles
-          ref: chore/scan0
+          ref: chore/scan
           ssh-key: ${{ secrets.PRIVATE_KEY_TASKFILES_DEPLOY }}
       - name: Lint Dockerfile
         run: |
