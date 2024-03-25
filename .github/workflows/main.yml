@@ -51,8 +51,9 @@ jobs:
       - name: Build and Push Container Image
         run: |
           task build:buildx
-      - name: Run Trivy vulnerability scanner
-        uses: aquasecurity/trivy-action@master
+      - name: Install Trivy vulnerability scanner
+        run: |
+          curl -L https://github.com/aquasecurity/trivy/releases/download/v0.50.0/trivy_0.50.0_Linux-64bit.deb --output /tmp/trivy.deb && dpkg --install /tmp/trivy.deb && rm -f /tmp/trivy.deb
       - name: Scan vulnerability for container image
         run: |
           task trivy:image
