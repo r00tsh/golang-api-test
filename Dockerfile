@@ -7,8 +7,7 @@ COPY src .
 RUN CGO_ENABLED=0 GOOS=linux go build -o app .
 
 # hadolint ignore=DL3006
-#FROM gcr.io/distroless/base-debian12
-FROM debian:11
+FROM gcr.io/distroless/base-debian12
 
 COPY --from=builder /src/app /
 

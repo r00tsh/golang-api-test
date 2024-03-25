@@ -41,7 +41,7 @@ jobs:
         with:
           repository: rootsh/taskfiles
           path: taskfiles
-          ref: chore/scan
+          ref: v0.0.2
           ssh-key: ${{ secrets.PRIVATE_KEY_TASKFILES_DEPLOY }}
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v3
@@ -91,7 +91,7 @@ jobs:
         with:
           repository: rootsh/taskfiles
           path: taskfiles
-          ref: chore/scan
+          ref: v0.0.2
           ssh-key: ${{ secrets.PRIVATE_KEY_TASKFILES_DEPLOY }}
       - name: Clone gitops repository
         uses: actions/checkout@v4
@@ -112,11 +112,11 @@ jobs:
           echo "GIT_REPO_NAME=$(basename $(git remote get-url origin) | cut -f1 -d'.')" >> $GITHUB_ENV
       - name: Pull request for GitOps
         env:
-          PIPELINE_ID: ${{ github.run_number }}-${{ github.sha }}
+          PIPELINE_ID: ${{ github.run_number }}
           DIRECTORY_APPS: gitops/k8s/main/applications
           GH_TOKEN: ${{ secrets.GITOPS_PAT_TOKEN }}
         run: |
-          task deploy:pr
+          task deploy:pr --dry
   argocd_sync:
     runs-on: self-hosted
     needs: deploy
@@ -137,7 +137,7 @@ jobs:
         with:
           repository: rootsh/taskfiles
           path: taskfiles
-          ref: chore/scan
+          ref: v0.0.2
           ssh-key: ${{ secrets.PRIVATE_KEY_TASKFILES_DEPLOY }}
       - name: Deploy PRD
         env:
