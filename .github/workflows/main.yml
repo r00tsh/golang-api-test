@@ -116,7 +116,7 @@ jobs:
           DIRECTORY_APPS: gitops/k8s/main/applications
           GH_TOKEN: ${{ secrets.GITOPS_PAT_TOKEN }}
         run: |
-          task deploy:pr --dry
+          task deploy:pr
   argocd_sync:
     runs-on: self-hosted
     needs: deploy
