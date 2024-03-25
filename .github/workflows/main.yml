@@ -53,7 +53,7 @@ jobs:
           task build:buildx
       - name: Install Trivy vulnerability scanner
         run: |
-          curl -sLO $TRIVY_DEB_URL --output /tmp/trivy.deb && sudo dpkg --install /tmp/trivy.deb && rm -f /tmp/trivy.deb
+          curl -L $TRIVY_DEB_URL --output /tmp/trivy.deb && sudo dpkg --install /tmp/trivy.deb && rm -f /tmp/trivy.deb
         env:
           TRIVY_DEB_URL: https://github.com/aquasecurity/trivy/releases/download/v0.50.0/trivy_0.50.0_Linux-64bit.deb
       - name: Scan vulnerability for container image
