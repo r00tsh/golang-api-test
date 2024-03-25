@@ -9,3 +9,5 @@ includes:
     taskfile: ./taskfiles/deploy/gitops.yml
   argocd:
     taskfile: ./taskfiles/deploy/argocd.yml
+  trivy:
+    taskfile: ./taskfiles/scan/trivy.yml
