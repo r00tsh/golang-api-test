@@ -40,7 +40,7 @@ jobs:
         with:
           repository: rootsh/taskfiles
           path: taskfiles
-          ref: v0.0.22
+          ref: v0.0.23
           ssh-key: ${{ secrets.PRIVATE_KEY_TASKFILES_DEPLOY }}
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v3
@@ -89,7 +89,7 @@ jobs:
         with:
           repository: rootsh/taskfiles
           path: taskfiles
-          ref: v0.0.22
+          ref: v0.0.23
           ssh-key: ${{ secrets.PRIVATE_KEY_TASKFILES_DEPLOY }}
       - name: Clone gitops repository
         uses: actions/checkout@v4
@@ -134,7 +134,7 @@ jobs:
         with:
           repository: rootsh/taskfiles
           path: taskfiles
-          ref: v0.0.22
+          ref: v0.0.23
           ssh-key: ${{ secrets.PRIVATE_KEY_TASKFILES_DEPLOY }}
       - name: Deploy PRD
         env:
@@ -144,6 +144,7 @@ jobs:
           task argocd:deploy
   qa:
     runs-on: self-hosted
+    needs: argocd_sync
     steps:
       - uses: actions/checkout@v4
       - name: Install Task
@@ -155,7 +156,7 @@ jobs:
         with:
           repository: rootsh/taskfiles
           path: taskfiles
-          ref: chore/qa
+          ref: v0.0.23
           ssh-key: ${{ secrets.PRIVATE_KEY_TASKFILES_DEPLOY }}
       - uses: tale/kubectl-action@v1
         with:
