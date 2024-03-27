@@ -162,7 +162,7 @@ jobs:
           K6_PACKAGE: https://github.com/grafana/k6/releases/download/v0.50.0/k6-v0.50.0-linux-arm64.tar.gz
       - name: Run tests
         run: |
-          ./k6 run --out json=k6_results.json k6/run.js
+          ./k6 run --out json=k6_results.json qa/k6/run.js
       - name: Upload Artifact for version
         uses: actions/upload-artifact@v4
         with:
