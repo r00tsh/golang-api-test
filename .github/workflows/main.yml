@@ -152,14 +152,14 @@ jobs:
       - uses: tale/kubectl-action@v1
         with:
           base64-kube-config: ${{ secrets.KUBE_CONFIG_MAIN }}
-      - name: Kubectl port-forward for application
-        run: |
-         kubectl port-forward svc/golang-api-test 8080:8080 -n golang-api-test &
       - name: Install k6
         run: |
           curl $K6_PACKAGE -L | tar xvz --strip-components 1
         env: 
           K6_PACKAGE: https://github.com/grafana/k6/releases/download/v0.50.0/k6-v0.50.0-linux-arm64.tar.gz
+      - name: Kubectl port-forward for application
+        run: |
+         kubectl port-forward svc/golang-api-test 8080:8080 -n golang-api-test &
       - name: Run tests
         run: |
           ./k6 run --out json=k6_results.json qa/k6/run.js
