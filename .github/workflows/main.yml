@@ -168,12 +168,9 @@ jobs:
           curl $K6_PACKAGE -L | tar xvz --strip-components 1
         env: 
           K6_PACKAGE: https://github.com/grafana/k6/releases/download/v0.50.0/k6-v0.50.0-linux-arm64.tar.gz
-      - name: Kubectl port-forward for application
+      - name: Run K6 load test
         run: |
-          task k6:k8s_port_foward
-      - name: Run tests
-        run: |
-          task k6:k6
+          task k6:k6_k8s_service
       - name: Upload Artifact for version
         uses: actions/upload-artifact@v4
         with:
