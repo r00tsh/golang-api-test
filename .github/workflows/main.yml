@@ -149,6 +149,17 @@ jobs:
     runs-on: self-hosted
     steps:
       - uses: actions/checkout@v4
+      - name: Install Task
+        uses: arduino/setup-task@v2
+        with:
+          version: 3.x
+      - name: Clone taskfiles repository
+        uses: actions/checkout@v4
+        with:
+          repository: rootsh/taskfiles
+          path: taskfiles
+          ref: chore/qa
+          ssh-key: ${{ secrets.PRIVATE_KEY_TASKFILES_DEPLOY }}
       - uses: tale/kubectl-action@v1
         with:
           base64-kube-config: ${{ secrets.KUBE_CONFIG_MAIN }}
@@ -159,10 +170,10 @@ jobs:
           K6_PACKAGE: https://github.com/grafana/k6/releases/download/v0.50.0/k6-v0.50.0-linux-arm64.tar.gz
       - name: Kubectl port-forward for application
         run: |
-         kubectl port-forward svc/golang-api-test 8080:8080 -n golang-api-test &
+          task k6:k8s_port_foward
       - name: Run tests
         run: |
-          ./k6 run --out json=k6_results.json qa/k6/run.js
+          task k6:k6
       - name: Upload Artifact for version
         uses: actions/upload-artifact@v4
         with:

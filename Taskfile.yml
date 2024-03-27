@@ -11,3 +11,5 @@ includes:
     taskfile: ./taskfiles/deploy/argocd.yml
   trivy:
     taskfile: ./taskfiles/scan/trivy.yml
+  k6:
+    taskfile: ./taskfiles/qa/k6.yml
