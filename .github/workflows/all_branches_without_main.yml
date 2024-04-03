@@ -57,5 +57,5 @@ jobs:
       - name: Unit Test
         run: |
           cd src
-          go test
+          go test *.go
           
