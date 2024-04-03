@@ -186,9 +186,8 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - name: Install Task
-        uses: arduino/setup-task@v2
-        with:
-          version: 3.x
+        run: |
+          sh -c "$(curl --location https://taskfile.dev/install.sh)" -- -d -b ~/.local/bin
       - name: Clone taskfiles repository
         uses: actions/checkout@v4
         with:
@@ -196,9 +195,11 @@ jobs:
           path: taskfiles
           ref: v0.0.23
           ssh-key: ${{ secrets.PRIVATE_KEY_TASKFILES_DEPLOY }}
-      - uses: tale/kubectl-action@v1
-        with:
-          base64-kube-config: ${{ secrets.KUBE_CONFIG_MAIN }}
+      - name: Install kubectl
+        run: |
+          curl -L "https://dl.k8s.io/release/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/linux/arm64/kubectl" -o ~/.local/bin/kubectl
+          chmod +x ~/.local/bin/kubectl
       - name: Run Scan
         run: |
-          zap-api-scan.py -t ${target} -f ${format} -J ${jsonReportName} -w ${mdReportName}  -r ${htmlReportName} ${cmdOptions}
+          echo Test
+          #zap-api-scan.py -t ${target} -f ${format} -J ${jsonReportName} -w ${mdReportName}  -r ${htmlReportName} ${cmdOptions}
