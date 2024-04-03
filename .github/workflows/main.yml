@@ -201,5 +201,9 @@ jobs:
           chmod +x ~/.local/bin/kubectl
       - name: Run Scan
         run: |
-          echo Test
-          #zap-api-scan.py -t ${target} -f ${format} -J ${jsonReportName} -w ${mdReportName}  -r ${htmlReportName} ${cmdOptions}
+          echo $KUBECONFIG_B64 | base64 -d > /tmp/kubeconfig
+          ~/.local/bin/kubectl port-forward svc/golang-api-test 8080:8080 -n golang-api-test --config /tmp/kubeconfig &
+          zap-api-scan.py -t $TARGET -f openapi -J zap-scan.json -w zap-scan.md  -r zap-scan.html
+        env:
+          KUBECONFIG_B64: ${{ secrets.KUBE_CONFIG_MAIN }}
+          TARGET: http://localhost:8080/swagger/doc.json
