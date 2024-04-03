@@ -204,7 +204,7 @@ jobs:
           ls -l
           echo $KUBECONFIG_B64 | base64 -d > /tmp/kubeconfig
           ~/.local/bin/kubectl port-forward svc/golang-api-test 8080:8080 -n golang-api-test --kubeconfig /tmp/kubeconfig &
-          zap-api-scan.py -t $TARGET -f openapi -J zap-scan.json -w zap-scan.md  -r zap-scan.html -d
+          zap-api-scan.py -t http://localhost:8080/swagger/doc.json -f openapi -J zap-scan.json -w zap-scan.md  -r zap-scan.html -d
         env:
           KUBECONFIG_B64: ${{ secrets.KUBE_CONFIG_MAIN }}
           TARGET: http://localhost:8080/swagger/doc.json
