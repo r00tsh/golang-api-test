@@ -6,7 +6,7 @@ on:
       - 'refs/tags/**'
 jobs:
   hadolint:
-    name: handolint
+    name: Lint Dockerfile
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -27,7 +27,7 @@ jobs:
         run: |
           task hadolint:dockerfile
   golangci:
-    name: lint
+    name: Lint
     runs-on: ubuntu-latest
     permissions:
         contents: read
@@ -47,6 +47,7 @@ jobs:
           working-directory: src
   unit_test:
     runs-on: ubuntu-latest
+    name: Unit Test
     needs: [golangci]
     container:
       image: golang:1.22

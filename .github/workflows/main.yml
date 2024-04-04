@@ -51,7 +51,7 @@ jobs:
         with:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
-      - name: Build and Push Container Image
+      - name: Build and Push container 
         run: |
           task build:buildx
       - name: Install Trivy vulnerability scanner
@@ -72,9 +72,9 @@ jobs:
           name: version
           path: version.txt
           retention-days: 90
-  deploy:
+  gitops:
     runs-on: ubuntu-latest
-    name: Deploy using GitOps
+    name: Update version in GitOps
     permissions: write-all
     needs: build_push
     steps:
@@ -121,7 +121,7 @@ jobs:
   argocd_sync:
     runs-on: self-hosted
     name: Deploy using ArgoCD
-    needs: deploy
+    needs: gitops
     environment: 'prd'
     steps:
       - uses: actions/checkout@v4
@@ -206,8 +206,16 @@ jobs:
         run: |
           ls -l
           echo $KUBECONFIG_B64 | base64 -d > /tmp/kubeconfig
+          mkdir wrk
           ~/.local/bin/kubectl port-forward svc/golang-api-test 8080:8080 -n golang-api-test --kubeconfig /tmp/kubeconfig &
-          zap-api-scan.py -t $TARGET -f openapi -d
+          zap-api-scan.py -t $TARGET -f openapi -r zap-scan-result.html
         env:
           KUBECONFIG_B64: ${{ secrets.KUBE_CONFIG_MAIN }}
           TARGET: http://localhost:8080/swagger/doc.json
+      - name: Upload Artifact scan
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: zap_scan
+          path: zap-scan-result.html
+          retention-days: 90
