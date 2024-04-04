@@ -24,8 +24,8 @@ func HealthHandler(w http.ResponseWriter, r *http.Request) {
 	}{
 		Status: "OK",
 	}
-
 	w.Header().Set("Content-Type", "application/json")
+	w.Header().Set("X-Content-Type-Options", "nosniff")
 	json.NewEncoder(w).Encode(status)
 }
 
