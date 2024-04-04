@@ -13,3 +13,5 @@ includes:
     taskfile: ./taskfiles/scan/trivy.yml
   k6:
     taskfile: ./taskfiles/qa/k6.yml
+  owasp-zap:
+    taskfile: ./taskfiles/dast/owasp-zap.yml

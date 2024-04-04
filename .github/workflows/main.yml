@@ -196,20 +196,14 @@ jobs:
         with:
           repository: rootsh/taskfiles
           path: taskfiles
-          ref: v0.0.23
-          ssh-key: ${{ secrets.PRIVATE_KEY_TASKFILES_DEPLOY }}
-      - name: Install kubectl
-        run: |
-          curl -L "https://dl.k8s.io/release/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/linux/arm64/kubectl" -o ~/.local/bin/kubectl
-          chmod +x ~/.local/bin/kubectl
+          ref: chore/dast
+          ssh-key: ${{ secrets.PRIVATE_KEY_TASKFILES_DEPLOY }}          
       - name: Run Scan
         continue-on-error: true
         run: |
-          ls -l
+          task owasp-zap:kubectl_install
+          task owasp-zap:run_zap_scan_api
           echo $KUBECONFIG_B64 | base64 -d > /tmp/kubeconfig
-          mkdir /zap/wrk
-          ~/.local/bin/kubectl port-forward svc/golang-api-test 8080:8080 -n golang-api-test --kubeconfig /tmp/kubeconfig &
-          zap-api-scan.py -t $TARGET  -f openapi -r  zap-scan-result.html  -z "-config globalexcludeurl.url_list.url.regex='^http:\/\/localhost:8080\/swagger.*$'" -S
         env:
           KUBECONFIG_B64: ${{ secrets.KUBE_CONFIG_MAIN }}
           TARGET: http://localhost:8080/swagger/doc.json
