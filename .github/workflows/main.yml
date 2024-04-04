@@ -217,5 +217,5 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: zap_scan
-          path: wrk/zap-scan-result.html
+          path: /zap/wrk/zap-scan-result.html
           retention-days: 90
