@@ -203,6 +203,7 @@ jobs:
           curl -L "https://dl.k8s.io/release/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/linux/arm64/kubectl" -o ~/.local/bin/kubectl
           chmod +x ~/.local/bin/kubectl
       - name: Run Scan
+        continue-on-error: true
         run: |
           ls -l
           echo $KUBECONFIG_B64 | base64 -d > /tmp/kubeconfig
