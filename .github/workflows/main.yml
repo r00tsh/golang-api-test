@@ -201,9 +201,8 @@ jobs:
       - name: Run Scan
         continue-on-error: true
         run: |
-          task owasp-zap:kubectl_install
-          task owasp-zap:run_zap_scan_api
-          echo $KUBECONFIG_B64 | base64 -d > /tmp/kubeconfig
+          ~/.local/bin/task owasp-zap:kubectl_install
+          ~/.local/bin/task owasp-zap:run_zap_scan_api
         env:
           KUBECONFIG_B64: ${{ secrets.KUBE_CONFIG_MAIN }}
           TARGET: http://localhost:8080/swagger/doc.json
