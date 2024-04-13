@@ -42,7 +42,7 @@ jobs:
         with:
           repository: rootsh/taskfiles
           path: taskfiles
-          ref: chore/scan-issue
+          ref: v0.0.25
           ssh-key: ${{ secrets.PRIVATE_KEY_TASKFILES_DEPLOY }}
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v3
@@ -95,7 +95,7 @@ jobs:
         with:
           repository: rootsh/taskfiles
           path: taskfiles
-          ref: v0.0.24
+          ref: v0.0.25
           ssh-key: ${{ secrets.PRIVATE_KEY_TASKFILES_DEPLOY }}
       - name: Clone gitops repository
         uses: actions/checkout@v4
@@ -141,7 +141,7 @@ jobs:
         with:
           repository: rootsh/taskfiles
           path: taskfiles
-          ref: v0.0.24
+          ref: v0.0.25
           ssh-key: ${{ secrets.PRIVATE_KEY_TASKFILES_DEPLOY }}
       - name: Deploy PRD
         env:
@@ -164,7 +164,7 @@ jobs:
         with:
           repository: rootsh/taskfiles
           path: taskfiles
-          ref: v0.0.24
+          ref: v0.0.25
           ssh-key: ${{ secrets.PRIVATE_KEY_TASKFILES_DEPLOY }}
       - uses: tale/kubectl-action@v1
         with:
@@ -199,7 +199,7 @@ jobs:
         with:
           repository: rootsh/taskfiles
           path: taskfiles
-          ref: v0.0.24
+          ref: v0.0.25
           ssh-key: ${{ secrets.PRIVATE_KEY_TASKFILES_DEPLOY }}          
       - name: Run Scan
         continue-on-error: true
