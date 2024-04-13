@@ -42,7 +42,7 @@ jobs:
         with:
           repository: rootsh/taskfiles
           path: taskfiles
-          ref: v0.0.24
+          ref: chore/scan-issue
           ssh-key: ${{ secrets.PRIVATE_KEY_TASKFILES_DEPLOY }}
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v3
@@ -62,6 +62,7 @@ jobs:
       - name: Scan vulnerability for container image
         run: |
           task trivy:image
+          task trivy:issue
       - name: Upload Trivy scan results to GitHub Security tab
         uses: github/codeql-action/upload-sarif@v3
         with:
