@@ -60,6 +60,8 @@ jobs:
         env:
           TRIVY_DEB_URL: https://github.com/aquasecurity/trivy/releases/download/v0.50.0/trivy_0.50.0_Linux-64bit.deb
       - name: Scan vulnerability for container image
+        env:
+          GH_TOKEN: ${{ secrets.GITOPS_PAT_TOKEN }}
         run: |
           task trivy:image
           task trivy:issue
