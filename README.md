@@ -1,0 +1,1 @@
+[![CI/CD for branch main](https://github.com/r00tsh/golang-api-test/actions/workflows/main.yml/badge.svg)](https://github.com/r00tsh/golang-api-test/actions/workflows/main.yml)
